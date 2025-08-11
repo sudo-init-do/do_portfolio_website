@@ -5,18 +5,18 @@ import Navbar from '@/components/site/navbar'
 import Footer from '@/components/site/footer'
 
 export const metadata: Metadata = {
-  title: 'Oyeyemi Obaloluwa — Software Engineer',
-  description: 'Full-stack engineer building delightful products.',
+  title: 'Obaloluwa Oyeyemi — Digital Sorcerer & Code Artisan',
+  description: 'Mind-blowing digital experiences that push boundaries. From blazing-fast web apps to stunning animations.',
   themeColor: '#2EA3FF'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
-          <main className="container py-12">{children}</main>
+          <main className="container py-8">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

@@ -1,26 +1,383 @@
 @import "tailwindcss";
 
 /* Light/Dark base tokens */
-:root { --background:#ffffff; --foreground:#171717; }
+:root { 
+  --background: #fafafa; 
+  --foreground: #1a1a1a; 
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --input: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --primary: #2EA3FF;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #1a1a1a;
+  --accent: #f4f4f5;
+  --accent-foreground: #1a1a1a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --ring: #2EA3FF;
+  --radius: 0.75rem;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root { --background:#0a0a0a; --foreground:#ededed; }
+  :root { 
+    --background: #0a0a0a; 
+    --foreground: #fafafa; 
+    --muted: #262626;
+    --muted-foreground: #a1a1aa;
+    --border: #27272a;
+    --input: #1a1a1a;
+    --card: #1a1a1a;
+    --card-foreground: #fafafa;
+    --primary: #2EA3FF;
+    --primary-foreground: #ffffff;
+    --secondary: #262626;
+    --secondary-foreground: #fafafa;
+    --accent: #262626;
+    --accent-foreground: #fafafa;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --ring: #2EA3FF;
+  }
 }
 
 /* Tailwind v4 theme tokens */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-brand: #2EA3FF;    /* sky blue */
-  --radius-xl: 0.75rem;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
+  --color-brand: var(--primary);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* Base */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+* {
+  border-color: var(--border);
 }
 
-/* Optional container helper */
-.container { margin-inline:auto; max-width:80rem; padding-inline:1.25rem; }
+body {
+  background: linear-gradient(135deg, var(--background) 0%, var(--muted) 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container helper */
+.container { 
+  margin-inline: auto; 
+  max-width: 80rem; 
+  padding-inline: 1.5rem; 
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Button hover lift effect */
+.btn-lift {
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .btn-lift:hover {
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4), 0 15px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced button effects - Performance Optimized */
+.btn-lift::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.3s ease;
+}
+
+.btn-lift:hover::before {
+  left: 100%;
+}
+
+.btn-lift:active {
+  transform: translateY(0px);
+}
+
+/* Simplified magical hover glows */
+.btn-lift.primary-glow:hover {
+  box-shadow: 
+    0 0 15px rgba(139, 92, 246, 0.4),
+    0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-lift.download-glow:hover {
+  box-shadow: 
+    0 0 15px rgba(34, 197, 94, 0.4),
+    0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-lift.github-glow:hover {
+  box-shadow: 
+    0 0 15px rgba(168, 85, 247, 0.4),
+    0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive button styles */
+@media (max-width: 640px) {
+  .btn-lift {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .btn-lift:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Simplified button ripple effect */
+.btn-lift:active {
+  transform: scale(0.98);
+}
+
+/* Crazy animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px #2EA3FF, 0 0 10px #2EA3FF, 0 0 15px #2EA3FF; }
+  50% { box-shadow: 0 0 10px #2EA3FF, 0 0 20px #2EA3FF, 0 0 30px #2EA3FF; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-effect {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(-45deg, #2EA3FF, #7C3AED, #EC4899, #2EA3FF);
+  background-size: 400% 400%;
+  animation: gradient-shift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Particle effect background */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #2EA3FF;
+  border-radius: 50%;
+  animation: float 6s linear infinite;
+  opacity: 0.6;
+}
+
+/* Awesome scroll reveal animations */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Epic hover effects */
+.card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(46, 163, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Neon border effect */
+.neon-border {
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(45deg, transparent, transparent) padding-box,
+              linear-gradient(45deg, #2EA3FF, #7C3AED, #EC4899) border-box;
+  border-radius: 16px;
+}
+
+.neon-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(45deg, #2EA3FF, #7C3AED, #EC4899);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+}
+
+/* Additional Creative Animations */
+/* Magical Glow Animation */
+@keyframes magical-glow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgba(46, 163, 255, 0.4),
+      0 0 40px rgba(46, 163, 255, 0.2),
+      0 0 60px rgba(46, 163, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 30px rgba(46, 163, 255, 0.6),
+      0 0 60px rgba(46, 163, 255, 0.4),
+      0 0 90px rgba(46, 163, 255, 0.2);
+  }
+}
+
+.magical-glow {
+  animation: magical-glow 3s ease-in-out infinite;
+}
+
+/* Holographic Card Effect */
+.holographic {
+  position: relative;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+.holographic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.holographic:hover::before {
+  left: 100%;
+}
+
+/* Pulse Animation */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(46, 163, 255, 0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(46, 163, 255, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Matrix particle effect */
+@keyframes matrix-fall {
+  0% { 
+    transform: translateY(-100vh); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(100vh); 
+    opacity: 0; 
+  }
+}
+
+.matrix-char {
+  position: absolute;
+  color: rgba(46, 163, 255, 0.1);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  animation: matrix-fall 3s linear infinite;
+}
