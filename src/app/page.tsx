@@ -2,8 +2,49 @@
 import Link from 'next/link'
 import { ArrowRight, Download, Github, ExternalLink, Zap, Code2, Terminal, Coffee, Music } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 
 export default function HomePage() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (isSubmitting) return // Prevent double submission
+    
+    setIsSubmitting(true)
+    setSubmitMessage('')
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message')
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (response.ok) {
+        setSubmitMessage('🚀 Message sent successfully! I\'ll get back to you soon.')
+        e.currentTarget.reset()
+      } else {
+        setSubmitMessage('❌ Something went wrong. Please try again.')
+      }
+    } catch {
+      setSubmitMessage('❌ Network error. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
   return (
     <div className="space-y-32 pt-16 relative overflow-hidden">
       {/* Simplified Floating Background Elements */}
@@ -479,7 +520,7 @@ export default function HomePage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="max-w-2xl mx-auto"
         >
-          <form className="glass rounded-2xl p-8 space-y-6 border border-primary/20" action="/api/contact" method="post">
+          <form className="glass rounded-2xl p-8 space-y-6 border border-primary/20" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <motion.div whileHover={{ scale: 1.02 }} className="space-y-2">
                 <label htmlFor="name" className="text-sm font-bold text-primary">Your Name</label>
@@ -516,12 +557,27 @@ export default function HomePage() {
             </motion.div>
             <motion.button 
               type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-lift w-full rounded-xl bg-gradient-to-r from-primary to-blue-600 px-8 py-4 font-bold text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-300 text-lg"
+              disabled={isSubmitting}
+              whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
+              className="btn-lift w-full rounded-xl bg-gradient-to-r from-primary to-blue-600 px-8 py-4 font-bold text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-300 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Launch This Project!
+              {isSubmitting ? 'Launching...' : 'Launch This Project!'}
             </motion.button>
+            
+            {submitMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-center p-4 rounded-xl ${
+                  submitMessage.includes('successfully') 
+                    ? 'bg-green-500/10 border border-green-500/20 text-green-400' 
+                    : 'bg-red-500/10 border border-red-500/20 text-red-400'
+                }`}
+              >
+                {submitMessage}
+              </motion.div>
+            )}
           </form>
         </motion.div>
       </motion.section>
