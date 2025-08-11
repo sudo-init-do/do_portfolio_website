@@ -297,7 +297,7 @@ export default function HomePage() {
                 >
                   <div className="text-center p-3 rounded-xl glass border border-primary/20">
                     <Code2 className="mx-auto text-primary mb-2" size={20} />
-                    <div className="text-base font-bold text-primary">50+</div>
+                    <div className="text-base font-bold text-primary">20+</div>
                     <div className="text-xs text-muted-foreground">Projects Built</div>
                   </div>
                   <div className="text-center p-3 rounded-xl glass border border-blue-500/20">
