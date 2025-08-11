@@ -1,28 +1,22 @@
-export const metadata = {
-  title: 'Shipping fast with Next.js + MDX',
-  description: 'Learn how to build and deploy blazing-fast websites using Next.js and MDX for content management.',
-  date: '2024-01-15',
-  readTime: '5 min read',
-  tags: ['Next.js', 'MDX', 'Web Development']
-}
-
 # Shipping fast with Next.js + MDX
 
 Local MDX keeps personal sites fast, simple, and versioned in Git.
-It's perfect for a personal blog without bringing a full CMS.
+Perfect for a personal blog without a full CMS.
 
-## Why MDX?
+## Why Next.js + MDX?
 
-MDX combines the simplicity of Markdown with the power of React components. This means you can:
+When building a personal portfolio or blog, you want something that's:
 
-- Write content in plain Markdown
-- Embed interactive React components
-- Keep everything in your codebase
-- Version control your content
+- **Fast** - Both to build and to load
+- **Simple** - Easy to write and maintain
+- **Flexible** - Can handle code examples and custom components
+- **Version controlled** - Everything in Git
+
+MDX gives you the best of both worlds: the simplicity of Markdown with the power of React components.
 
 ## Getting Started
 
-Setting up MDX with Next.js is straightforward. Here's what you need to do:
+Here's how to set up MDX in your Next.js project:
 
 ```bash
 npm install @next/mdx @mdx-js/loader @mdx-js/react
@@ -34,11 +28,12 @@ Then configure your `next.config.js`:
 import createMDX from '@next/mdx'
 
 const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Configure `pageExtensions` to include MDX files
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
 }
 
 const withMDX = createMDX({
-  // Add markdown plugins here
+  // Add markdown plugins here, as desired
 })
 
 export default withMDX(nextConfig)
@@ -46,15 +41,32 @@ export default withMDX(nextConfig)
 
 ## Benefits
 
-Using MDX for your blog gives you several advantages:
+### Performance
+MDX files are compiled at build time, making them incredibly fast to serve.
 
-1. **Performance**: Static generation means fast loading times
-2. **Developer Experience**: Write in your favorite editor with syntax highlighting
-3. **Version Control**: Track changes with Git
-4. **Flexibility**: Mix content with interactive components
+### Developer Experience
+Write in Markdown but include React components when you need them.
+
+### SEO
+Since everything is static, search engines can easily crawl and index your content.
 
 ## Conclusion
 
-MDX strikes the perfect balance between simplicity and power. It's ideal for developers who want to maintain their blog alongside their code, with full control over the content and presentation.
+Next.js + MDX is a powerful combination for content-driven sites. It gives you the performance of static generation with the flexibility of React components.
 
-Happy blogging!
+Give it a try for your next blog or documentation site!# Shipping fast with Next.js + MDXLocal MDX keeps personal sites fast, simple, and versioned in Git.Perfect for a personal blog without a full CMS.## Why Next.js + MDX?When building a personal portfolio or blog, you want something that's:- **Fast** - Both to build and to load- **Simple** - Easy to write and maintain- **Flexible** - Can handle code examples and custom components- **Version controlled** - Everything in GitMDX gives you the best of both worlds: the simplicity of Markdown with the power of React components.## Getting StartedHere's how to set up MDX in your Next.js project:```bashnpm install @next/mdx @mdx-js/loader @mdx-js/react```Then configure your `next.config.js`:```javascriptimport createMDX from '@next/mdx'const nextConfig = {  // Configure `pageExtensions` to include MDX files  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],}const withMDX = createMDX({  // Add markdown plugins here, as desired})export default withMDX(nextConfig)```## Benefits### PerformanceMDX files are compiled at build time, making them incredibly fast to serve.### Developer ExperienceWrite in Markdown but include React components when you need them:```mdximport { CustomChart } from '../components/Chart'# My Blog Post
+Here's some regular markdown content.
+
+<CustomChart data={myData} />
+
+And back to markdown!
+```
+
+### SEO
+Since everything is static, search engines can easily crawl and index your content.
+
+## Conclusion
+
+Next.js + MDX is a powerful combination for content-driven sites. It gives you the performance of static generation with the flexibility of React components.
+
+Give it a try for your next blog or documentation site!
