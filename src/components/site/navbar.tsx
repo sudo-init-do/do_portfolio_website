@@ -1,21 +1,42 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Moon, Sun, Menu, X } from 'lucide-react'
+import { Moon, Sun, Monitor, Menu, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
+    setMounted(true)
     const onScroll = () => setScrolled(window.scrollY > 20)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const cycleTheme = () => {
+    if (theme === 'light') setTheme('dark')
+    else if (theme === 'dark') setTheme('system')
+    else setTheme('light')
+  }
+
+  const getThemeIcon = () => {
+    if (!mounted) return <Sun size={18} />
+    
+    switch (theme) {
+      case 'light':
+        return <Sun size={18} className="text-amber-500 group-hover:rotate-12 transition-transform duration-300" />
+      case 'dark':
+        return <Moon size={18} className="text-slate-300 group-hover:-rotate-12 transition-transform duration-300" />
+      default:
+        return <Monitor size={18} className="text-blue-500 group-hover:scale-110 transition-transform duration-300" />
+    }
+  }
 
   const navLinks = [
     { href: '/#projects', label: 'Projects' },
@@ -28,10 +49,10 @@ export default function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled 
-          ? 'glass shadow-lg shadow-black/5 dark:shadow-black/20' 
-          : 'bg-transparent'
+          ? 'glass shadow-lg shadow-black/5 dark:shadow-black/20 backdrop-blur-xl' 
+          : 'bg-transparent backdrop-blur-sm'
       }`}
     >
       <div className="container flex h-16 items-center justify-between">
@@ -58,11 +79,15 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <button
-            aria-label="Toggle theme"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="btn-lift rounded-full border p-2.5 text-sm hover:bg-accent transition-colors"
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
+            onClick={cycleTheme}
+            className="btn-lift rounded-full border p-2.5 text-sm hover:bg-accent transition-all duration-300 relative overflow-hidden group"
+            title={`Current: ${theme || 'system'} theme. Click to cycle.`}
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            <div className="relative z-10 transition-transform duration-300">
+              {getThemeIcon()}
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-100 to-amber-50 dark:from-slate-800 dark:to-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
           </button>
 
           {/* Mobile Menu Button */}

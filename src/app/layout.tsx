@@ -13,11 +13,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          <main className="container py-8">{children}</main>
-          <Footer />
+      <body className="min-h-screen antialiased">
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="system" 
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          <div className="relative min-h-screen">
+            <Navbar />
+            <main className="container py-8">{children}</main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
