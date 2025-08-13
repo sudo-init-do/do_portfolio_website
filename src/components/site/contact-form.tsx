@@ -9,16 +9,36 @@ export default function ContactForm() {
     setStatus('sending')
 
     const form = new FormData(e.currentTarget)
+    const data = {
+      name: form.get('name') as string,
+      email: form.get('email') as string,
+      message: form.get('message') as string,
+    }
 
     try {
-      const res = await fetch('/api/contact', { method: 'POST', body: form })
-      if (res.ok) {
+      const res = await fetch('/api/contact', { 
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      
+      const result = await res.json()
+      
+      if (res.ok && result.ok) {
         setStatus('sent')
-        e.currentTarget.reset()
+        // Safely reset the form
+        const form = e.currentTarget
+        if (form) {
+          form.reset()
+        }
       } else {
+        console.error('Contact form error:', result.error)
         setStatus('error')
       }
-    } catch {
+    } catch (error) {
+      console.error('Network error:', error)
       setStatus('error')
     }
   }
@@ -46,16 +66,20 @@ export default function ContactForm() {
       />
       <button
         disabled={status === 'sending'}
-        className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+        className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
       >
-        {status === 'sending' ? 'Sending…' : 'Send'}
+        {status === 'sending' ? '📧 Sending…' : 'Launch This Project!'}
       </button>
 
       {status === 'sent' && (
-        <p className="text-sm text-green-600">✅ Thanks! Your message was sent.</p>
+        <div className="text-sm text-green-600 bg-green-50 p-3 rounded-lg border border-green-200">
+          ✅ <strong>Message sent successfully!</strong> I&#39;ll get back to you soon.
+        </div>
       )}
       {status === 'error' && (
-        <p className="text-sm text-red-600">❌ Something went wrong. Please try again.</p>
+        <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">
+          ❌ <strong>Network error.</strong> Please try again or email me directly.
+        </div>
       )}
     </form>
   )

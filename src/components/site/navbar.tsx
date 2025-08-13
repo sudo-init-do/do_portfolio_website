@@ -78,17 +78,19 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
-            onClick={cycleTheme}
-            className="btn-lift rounded-full border p-2.5 text-sm hover:bg-accent transition-all duration-300 relative overflow-hidden group"
-            title={`Current: ${theme || 'system'} theme. Click to cycle.`}
-          >
-            <div className="relative z-10 transition-transform duration-300">
-              {getThemeIcon()}
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-100 to-amber-50 dark:from-slate-800 dark:to-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-          </button>
+          {mounted && (
+            <button
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
+              onClick={cycleTheme}
+              className="btn-lift rounded-full border p-2.5 text-sm hover:bg-accent transition-all duration-300 relative overflow-hidden group"
+              title={`Current: ${theme || 'system'} theme. Click to cycle.`}
+            >
+              <div className="relative z-10 transition-transform duration-300">
+                {getThemeIcon()}
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-100 to-amber-50 dark:from-slate-800 dark:to-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+            </button>
+          )}
 
           {/* Mobile Menu Button */}
           <button

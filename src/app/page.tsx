@@ -33,13 +33,21 @@ export default function HomePage() {
         body: JSON.stringify(data)
       })
 
-      if (response.ok) {
+      const result = await response.json()
+
+      if (response.ok && result.ok) {
         setSubmitMessage('🚀 Message sent successfully! I\'ll get back to you soon.')
-        e.currentTarget.reset()
+        // Safely reset the form
+        const form = e.currentTarget
+        if (form) {
+          form.reset()
+        }
       } else {
+        console.error('Contact form error:', result.error)
         setSubmitMessage('❌ Something went wrong. Please try again.')
       }
-    } catch {
+    } catch (error) {
+      console.error('Network error:', error)
       setSubmitMessage('❌ Network error. Please try again.')
     } finally {
       setIsSubmitting(false)
